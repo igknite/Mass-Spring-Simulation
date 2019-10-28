@@ -45,6 +45,49 @@ public:
 public:
 	void init()
 	{
+		// Node
+		for (int x = size_x; x > 0; x--) {
+			for (int y = size_y; y > 0; y--) {
+				int z = size_z;
+				Node *xp = new Node(vec3(x, z, y)); // change y,z for error detecting
+				nodes.push_back(xp);
+			}
+		}
+		//Structural spring row / column
+		for (int x = 0; x < size_x; x++) {
+			for (int y = 0; y < size_y-1; y++) {
+				int z = size_z;
+				mass_spring *sp = new mass_spring(nodes[50*x+y], nodes[50*x+y+1]);
+				sp->spring_coef = structural_coef;
+				spring.push_back(sp);
+			}
+		}
+		for (int x = 0; x < size_x - 1; x++) {
+			for (int y = 0; y < size_y; y++) {
+				int z = size_z;
+				mass_spring *sp = new mass_spring(nodes[50 * x + y], nodes[50 * (x + 1) + y]);
+				sp->spring_coef = structural_coef;
+				spring.push_back(sp);
+			}
+		}
+		//Shear spring
+		for (int x = 0; x < size_x - 1; x++) {
+			for (int y = 0; y < size_y - 1; y++) {
+				int z = size_z;
+				mass_spring *sp = new mass_spring(nodes[50 * x + y], nodes[50 * (x + 1) + y + 1]);
+				sp->spring_coef = shear_coef;
+				spring.push_back(sp);
+			}
+		}
+		for (int x = 0; x < size_x - 1; x++) {
+			for (int y = 1; y < size_y; y++) {
+				int z = size_z;
+				mass_spring *sp = new mass_spring(nodes[50 * x + y], nodes[50 * (x + 1) + y - 1]);
+				sp->spring_coef = shear_coef;
+				spring.push_back(sp);
+			}
+		}
+
 		//Basic Implements 1. Init Nodes and Shear and Structural Springs
 		//Additional Implements 1. Init Bending Spring
 		/*
