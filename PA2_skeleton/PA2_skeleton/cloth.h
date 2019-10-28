@@ -53,6 +53,7 @@ public:
 				nodes.push_back(xp);
 			}
 		}
+
 		//Structural spring row / column
 		for (int x = 0; x < size_x; x++) {
 			for (int y = 0; y < size_y-1; y++) {
@@ -70,6 +71,7 @@ public:
 				spring.push_back(sp);
 			}
 		}
+
 		//Shear spring
 		for (int x = 0; x < size_x - 1; x++) {
 			for (int y = 0; y < size_y - 1; y++) {
@@ -88,6 +90,45 @@ public:
 			}
 		}
 
+		//bending spring row / column
+		for (int x = 0; x < size_x; x++) {
+			for (int y = 0; y < size_y - 2; y++) {
+				int z = size_z;
+				mass_spring *sp = new mass_spring(nodes[50 * x + y], nodes[50 * x + y + 2]);
+				sp->spring_coef = bending_coef;
+				spring.push_back(sp);
+			}
+		}
+		for (int x = 0; x < size_x - 2; x++) {
+			for (int y = 0; y < size_y; y++) {
+				int z = size_z;
+				mass_spring *sp = new mass_spring(nodes[50 * x + y], nodes[50 * (x + 2) + y]);
+				sp->spring_coef = bending_coef;
+				spring.push_back(sp);
+			}
+		}
+
+		//fix point
+		nodes[0]->isFixed = true;
+		nodes[49]->isFixed = true;
+
+		//face
+		for (int x = 0; x < size_x-1; x++) {
+			for (int y = 0; y < size_y - 1; y++) {
+				faces.push_back(nodes[50 * x + y]);
+				faces.push_back(nodes[50 * (x + 1) + y + 1]);
+				faces.push_back(nodes[50 * (x + 1) + y]);
+			}
+		}
+		for (int x = 0; x < size_x - 1; x++) {
+			for (int y = 0; y < size_y - 1; y++) {
+				faces.push_back(nodes[50 * x + y]);
+				faces.push_back(nodes[50 * x + y + 1]);
+				faces.push_back(nodes[50 * (x + 1) + y + 1]);
+			}
+		}
+
+
 		//Basic Implements 1. Init Nodes and Shear and Structural Springs
 		//Additional Implements 1. Init Bending Spring
 		/*
@@ -102,7 +143,8 @@ public:
 			faces.push_back(p[Node_Index_A]);
 			faces.push_back(p[Node_Index_C]);
 			faces.push_back(p[Node_Index_B]);
-		*/
+		*/ //done
+
 		//Additional Implements 4-2. Initialize Texture Coordinates	
 	}
 	
