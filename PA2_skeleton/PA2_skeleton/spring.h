@@ -30,7 +30,11 @@ public:
 	}
 
 	void internal_force(double dt)
-	{
+	{	
+		vec3 normalizd = (p1->position - p2->position).Normalizevec();
+		vec3 force = (normalizd) * (spring_coef*(p1->position.dist(p2->position) - initial_length) + damping_coef * (p1->velocity - p2->velocity).dot(normalizd));
+		p1->add_force(-1*force);
+		p2->add_force(force);
 		//Basic Implements 2-1. Compute Spring Force
 		/*add hook_force and damping force*/
 		// node1->add_force(force);

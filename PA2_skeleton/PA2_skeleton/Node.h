@@ -45,8 +45,14 @@ public:
 	void integrate(double dt)
 	{
 		if (!isFixed)
-		{
-			//Basic Implements 2-2. Integration
+		{	
+			//printf("%d\n",force);
+			acceleration = force / mass;
+			velocity = acceleration * dt + velocity;
+			position = position + velocity * dt;
+
+			//Basic Implements 2-2. Integration 
+			// done
 		}
 		/*initialize Force*/
 		force.x = force.y = force.z= 0.0;

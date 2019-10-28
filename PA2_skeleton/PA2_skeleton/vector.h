@@ -202,6 +202,16 @@ public:
 		y /= w;
 		z /= w;
 	}
+	vec3 Normalizevec()
+	{
+		double w = length();
+		if (w < 0.00001) return vec3(x,y,z);
+		x /= w;
+		y /= w;
+		z /= w;
+		return vec3(x, y, z);
+	}
+
 	double  dot(vec3 v)
 	{
 		return (x*v.x + y*v.y + z*v.z);
