@@ -118,16 +118,12 @@ public:
 				faces.push_back(nodes[50 * x + y]);
 				faces.push_back(nodes[50 * (x + 1) + y + 1]);
 				faces.push_back(nodes[50 * (x + 1) + y]);
-			}
-		}
-		for (int x = 0; x < size_x - 1; x++) {
-			for (int y = 0; y < size_y - 1; y++) {
+				
 				faces.push_back(nodes[50 * x + y]);
 				faces.push_back(nodes[50 * x + y + 1]);
 				faces.push_back(nodes[50 * (x + 1) + y + 1]);
 			}
 		}
-
 
 		//Basic Implements 1. Init Nodes and Shear and Structural Springs
 		//Additional Implements 1. Init Bending Spring
@@ -150,6 +146,22 @@ public:
 	
 	void computeNormal()
 	{
+		for (int i = 0; i < nodes.size(); i++) {
+			nodes[i]->normal = vec3(0,0,0);
+		}
+		for (int i = 0; i < faces.size(); i += 3) {
+			vec3 p1 = faces[i + 1]->position - faces[i]->position;
+			vec3 p2 = faces[i + 2]->position - faces[i]->position;
+			vec3 N = p1.Cross(p2);
+			vec3 NN = N.Normalizevec();
+			faces[i]->normal += NN;
+			faces[i + 1]->normal += NN;
+			faces[i + 2]->normal += NN;
+		}
+		for (int i = 0; i < nodes.size(); i++) {
+			nodes[i]->normal.Normalize();
+		}
+
 		//Basic Implements 3-2. Compute Vertex Normal
 		/*
 			for(each face)
@@ -160,7 +172,7 @@ public:
 			{
 				인접한 face의 평균 normal
 			}
-		*/
+		*/ //done
 	}
 	
 	void add_force(vec3 additional_force)
@@ -195,6 +207,11 @@ public:
 	
 	void collision_response(vec3 ground)
 	{
+		for (int i = 0; i < nodes.size(); i++) {
+			if ((nodes[i]->position - ground).dot(vec3(0, 1, 0)) <= 1 && vec3(0, 1, 0).dot(nodes[i]->velocity)<0) {
+				nodes[i]->velocity.y *= -0.5;
+			}
+		}
 		//Basic Implements 4. Collision Check with ground
 		//Additional Implements 2. Collision Check with Sphere
 		//Additional Implements 3. Collision Check with Mesh Object
@@ -203,7 +220,7 @@ public:
 			{
 				Collision Response
 			}
-		*/
+		*/ //done
 
 	}
 

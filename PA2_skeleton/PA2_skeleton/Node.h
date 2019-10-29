@@ -46,7 +46,6 @@ public:
 	{
 		if (!isFixed)
 		{	
-			//printf("%d\n",force);
 			acceleration = force / mass;
 			velocity = acceleration * dt + velocity;
 			position = position + velocity * dt;

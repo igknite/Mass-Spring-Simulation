@@ -38,7 +38,7 @@ public:
 		//Basic Implements 2-1. Compute Spring Force
 		/*add hook_force and damping force*/
 		// node1->add_force(force);
-		// node2->add_force(force);
+		// node2->add_force(force); //done
 	}
 	void draw();
 
