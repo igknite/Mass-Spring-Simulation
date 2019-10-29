@@ -49,7 +49,7 @@ public:
 		for (int x = size_x; x > 0; x--) {
 			for (int y = size_y; y > 0; y--) {
 				int z = size_z;
-				Node *xp = new Node(vec3(x, z, y)); // change y,z for error detecting
+				Node *xp = new Node(vec3(size_x-x, z, size_y-y)); // change y,z for error detecting
 				nodes.push_back(xp);
 			}
 		}

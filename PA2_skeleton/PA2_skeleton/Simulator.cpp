@@ -51,7 +51,7 @@ void Simulator::Update()
  
 void Simulator::Render()
 {
-	//Lighting();
+	Lighting();
   	DrawGround();
  	cloth->draw();
 }

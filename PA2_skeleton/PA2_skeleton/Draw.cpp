@@ -46,7 +46,8 @@ void mass_cloth::draw()
 		break;
 	case DRAW_FACES:
 		glColor3f(0.5f, 0.5f, 0.5f);
-		glDisable(GL_LIGHTING);
+		glEnable(GL_LIGHTING);
+
 		for (int i = 0; i < faces.size(); i = i + 3) {
 			glBegin(GL_TRIANGLES);
 				glVertex3f(faces[i]->getPosX(),faces[i]->getPosY(),faces[i]->getPosZ());
@@ -54,7 +55,6 @@ void mass_cloth::draw()
 				glVertex3f(faces[i + 2]->getPosX(), faces[i + 2]->getPosY(), faces[i + 2]->getPosZ());
 				glEnd();
 		}
-		glEnable(GL_LIGHTING);
 		//Basic Implements 3-3. Draw Call for Cloth //done
 		//Additional Implements 4-3. Texture Coordinate Mapping
 		break;
