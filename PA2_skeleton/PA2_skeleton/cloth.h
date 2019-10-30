@@ -49,7 +49,8 @@ public:
 		for (int x = size_x; x > 0; x--) {
 			for (int y = size_y; y > 0; y--) {
 				int z = size_z;
-				Node *xp = new Node(vec3(size_x-x, z, size_y-y)); // change y,z for error detecting
+				Node *xp = new Node(vec3(size_x-x-25, z, size_y-y-25)); // change y,z for error detecting
+				xp->inipos = vec3(size_x - x, z, size_y - y)/49;
 				nodes.push_back(xp);
 			}
 		}
@@ -140,7 +141,8 @@ public:
 			faces.push_back(p[Node_Index_C]);
 			faces.push_back(p[Node_Index_B]);
 		*/ //done
-
+		GLuint Texture;
+		Texture = LoadTexture("skt_t1.bmp");
 		//Additional Implements 4-2. Initialize Texture Coordinates	
 	}
 	
@@ -223,6 +225,55 @@ public:
 		*/ //done
 
 	}
+	GLuint LoadTexture(const char * filename)
+	{
 
+		GLuint texture;
+
+		int width, height;
+
+		unsigned char * data;
+
+		FILE * file;
+
+		file = fopen(filename, "rb");
+
+		if (file == NULL) return 0;
+		width = 900;
+		height = 900;
+		data = (unsigned char *)malloc(width * height * 3);
+		fread(data, 54, 1, file);
+		//int size = fseek(file,);
+
+		fread(data, width * height * 3, 1, file);
+		fclose(file);
+
+		for (int i = 0; i < width * height; ++i)
+		{
+			int index = i * 3;
+			unsigned char B, R;
+			B = data[index];
+			R = data[index + 2];
+
+			data[index] = R;
+			data[index + 2] = B;
+
+		}
+
+
+		glGenTextures(1, &texture);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+
+
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, data);
+		free(data);
+
+		return texture;
+	}
 	void draw();
 };

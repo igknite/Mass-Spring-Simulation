@@ -16,6 +16,7 @@ public:
 	vec3	acceleration;
 	vec3	normal;
 	bool	isFixed;
+	vec3	inipos;
 
 public:
 	Node(void)

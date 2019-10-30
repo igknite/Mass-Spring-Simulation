@@ -56,7 +56,7 @@ int main(int argc, char ** argv)
 	glutInitWindowSize(1024, 800);
 	glutCreateWindow("Cloth Spring Simulation ");
 	glEnable(GL_DEPTH_TEST);
-
+	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 	Initialize();
 	glutTimerFunc(10, Update, 0);
 	glutDisplayFunc(Render);

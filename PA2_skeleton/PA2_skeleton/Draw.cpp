@@ -47,15 +47,23 @@ void mass_cloth::draw()
 	case DRAW_FACES:
 		glColor3f(0.5f, 0.5f, 0.5f);
 		glEnable(GL_LIGHTING);
-
+		glEnable(GL_TEXTURE_2D);
 		for (int i = 0; i < faces.size(); i = i + 3) {
 			glBegin(GL_TRIANGLES);
+				glTexCoord2f(faces[i]->inipos.x,faces[i]->inipos.z);
+				glNormal3f(faces[i]->normal.x, faces[i]->normal.y, faces[i]->normal.z);
 				glVertex3f(faces[i]->getPosX(),faces[i]->getPosY(),faces[i]->getPosZ());
+				glTexCoord2f(faces[i+1]->inipos.x, faces[i+1]->inipos.z);
+				glNormal3f(faces[i+1]->normal.x, faces[i+1]->normal.y, faces[i+1]->normal.z);
 				glVertex3f(faces[i + 1]->getPosX(), faces[i + 1]->getPosY(), faces[i + 1]->getPosZ());
+				glTexCoord2f(faces[i+2]->inipos.x, faces[i+2]->inipos.z);
+				glNormal3f(faces[i+2]->normal.x, faces[i+2]->normal.y, faces[i+2]->normal.z);
 				glVertex3f(faces[i + 2]->getPosX(), faces[i + 2]->getPosY(), faces[i + 2]->getPosZ());
-				glEnd();
+			glEnd();
 		}
+		glDisable(GL_TEXTURE_2D);
 		//Basic Implements 3-3. Draw Call for Cloth //done
+
 		//Additional Implements 4-3. Texture Coordinate Mapping
 		break;
 	default:
