@@ -97,7 +97,19 @@ void Viewer::Motion(int x, int y)
 		}
 		else if (interationMode)
 		{
-			//Basic Implements 5. User Interaction
+			GLfloat matrix[16];
+			glPushMatrix();
+			glLoadIdentity();
+			glRotatef(m_Rotate[0], 1.0, 0.0, 0.0);
+			glRotatef(m_Rotate[1], 0.0, 1.0, 0.0);
+			glGetFloatv(GL_MODELVIEW_MATRIX,matrix);
+			glPopMatrix();
+			vec3 userforce = vec3(diffx,diffy,0);
+			userforce.x = (matrix[0] * userforce.x + matrix[4] * userforce.y + matrix[8] * userforce.z + matrix[12] * 1);
+			userforce.y = -(matrix[1] * userforce.x + matrix[5] * userforce.y + matrix[9] * userforce.z + matrix[13] * 1);
+			userforce.z = matrix[2] * userforce.x + matrix[6] * userforce.y + matrix[10] * userforce.z + matrix[14] * 1;
+			S_Simulator.cloth->add_force(userforce);
+			//Basic Implements 5. User Interaction //done
 		}
  	}
 	else if (m_Mouse_Event[1])
