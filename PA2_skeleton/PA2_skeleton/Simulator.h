@@ -26,10 +26,14 @@ public:
 	void					Render();
 	void					Lighting(void);
 	void					DrawGround(void);
+	void					DrawSphere();
 
 public:
 	mass_cloth			*cloth;
 	vec3				ground;
+	vec3				sphere;
+	float				radius;
+	bool				m_Sphere;
 	float timsStep;
 };
 

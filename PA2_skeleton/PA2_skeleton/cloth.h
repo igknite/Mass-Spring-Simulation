@@ -49,7 +49,7 @@ public:
 		for (int x = size_x; x > 0; x--) {
 			for (int y = size_y; y > 0; y--) {
 				int z = size_z;
-				Node *xp = new Node(vec3(size_x-x-25, z, size_y-y-25)); // change y,z for error detecting
+				Node *xp = new Node(vec3(size_x-x-25, z, size_y-y-25));
 				xp->inipos = vec3(size_x - x, z, size_y - y)/49;
 				nodes.push_back(xp);
 			}
@@ -150,7 +150,7 @@ public:
 	{
 		for (int i = 0; i < nodes.size(); i++) {
 			nodes[i]->normal = vec3(0,0,0);
-		}
+		} 
 		for (int i = 0; i < faces.size(); i += 3) {
 			vec3 p1 = faces[i + 1]->position - faces[i]->position;
 			vec3 p2 = faces[i + 2]->position - faces[i]->position;
@@ -163,18 +163,6 @@ public:
 		for (int i = 0; i < nodes.size(); i++) {
 			nodes[i]->normal.Normalize();
 		}
-
-		//Basic Implements 3-2. Compute Vertex Normal
-		/*
-			for(each face)
-			{
-				compute face normal
-			}
-			for(each node)
-			{
-				인접한 face의 평균 normal
-			}
-		*/ //done
 	}
 	
 	void add_force(vec3 additional_force)
@@ -206,24 +194,24 @@ public:
 			nodes[i]->integrate(dt);
 		}
 	}
-	
+	void collision_response_sphere(vec3 Object, double r) {
+		for (int i = 0; i < nodes.size(); i++) {
+			vec3 nodetosp = (nodes[i]->position - Object).Normalizevec();
+			if ((nodes[i]->position - Object).dot(nodetosp) <= r && nodetosp.dot(nodes[i]->velocity) < 0) {
+				vec3 VN = nodetosp.dot(nodes[i]->velocity)*nodetosp;
+				vec3 VT = nodes[i]->velocity - VN;
+				nodes[i]->velocity = VT - VN;
+			}
+		}
+	}
+
 	void collision_response(vec3 ground)
 	{
 		for (int i = 0; i < nodes.size(); i++) {
-			if ((nodes[i]->position - ground).dot(vec3(0, 1, 0)) <= 1 && vec3(0, 1, 0).dot(nodes[i]->velocity)<0) {
+			if ((nodes[i]->position - ground).dot(vec3(0, 1, 0)) <= 1 && vec3(0, 1, 0).dot(nodes[i]->velocity) < 0) {
 				nodes[i]->velocity.y *= -0.5;
 			}
 		}
-		//Basic Implements 4. Collision Check with ground
-		//Additional Implements 2. Collision Check with Sphere
-		//Additional Implements 3. Collision Check with Mesh Object
-		/*
-			if(Collision Detection)
-			{
-				Collision Response
-			}
-		*/ //done
-
 	}
 	GLuint LoadTexture(const char * filename)
 	{
@@ -243,8 +231,6 @@ public:
 		height = 900;
 		data = (unsigned char *)malloc(width * height * 3);
 		fread(data, 54, 1, file);
-		//int size = fseek(file,);
-
 		fread(data, width * height * 3, 1, file);
 		fclose(file);
 

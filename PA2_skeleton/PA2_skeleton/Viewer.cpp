@@ -109,7 +109,6 @@ void Viewer::Motion(int x, int y)
 			userforce.y = -(matrix[1] * userforce.x + matrix[5] * userforce.y + matrix[9] * userforce.z + matrix[13] * 1);
 			userforce.z = matrix[2] * userforce.x + matrix[6] * userforce.y + matrix[10] * userforce.z + matrix[14] * 1;
 			S_Simulator.cloth->add_force(userforce);
-			//Basic Implements 5. User Interaction //done
 		}
  	}
 	else if (m_Mouse_Event[1])
@@ -136,6 +135,9 @@ void Viewer::Keyboard(unsigned char key, int x, int y)
 		break;
 	case '3':
 		S_Simulator.cloth->drawMode = mass_cloth::DRAW_FACES;
+		break;
+	case '4':
+		S_Simulator.m_Sphere = !S_Simulator.m_Sphere;
 		break;
 	case 27:
 	case 'q':

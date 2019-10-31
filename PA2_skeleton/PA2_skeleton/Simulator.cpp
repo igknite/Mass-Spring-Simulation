@@ -17,6 +17,8 @@ void Simulator::Initialize()
 {
 	timsStep = 0.01;
 	ground =vec3(0.0,-15,0.0);
+	sphere = vec3(0, -5, 0);
+	radius = 5.0f;
 	cloth = new mass_cloth();
 
 	cloth->dx = 1;
@@ -43,6 +45,8 @@ void Simulator::Update()
 		cloth->compute_force(timsStep, gravity);
 		cloth->integrate(timsStep);
 		cloth->collision_response(ground);
+		if (m_Sphere)
+			cloth->collision_response_sphere(sphere, radius+1);
 	}
 
 	cloth->computeNormal();
@@ -53,6 +57,7 @@ void Simulator::Render()
 {
 	Lighting();
   	DrawGround();
+	if(m_Sphere)	DrawSphere();
  	cloth->draw();
 }
 
@@ -106,3 +111,11 @@ void Simulator::DrawGround(void){
 	glEnd();
 }
 
+void Simulator::DrawSphere() {
+	glColor3f(0.0f, 1.0f, 1.0f);
+	GLUquadric *sp = gluNewQuadric();
+	glPushMatrix();
+	glTranslatef(sphere.x, sphere.y, sphere.z);
+	gluSphere(sp, radius, 50, 20);
+	glPopMatrix();
+}

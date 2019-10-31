@@ -47,6 +47,10 @@ public:
 	{
 		if (!isFixed)
 		{	
+			if (position.y < -14.5) {
+				position.y = -14.5;
+				velocity.y = 0;
+			}
 			acceleration = force / mass;
 			velocity = acceleration * dt + velocity;
 			position = position + velocity * dt;
